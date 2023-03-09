@@ -6,7 +6,7 @@ import time
 # Choose a bucket to store the data in
 bucket = "monitoring_database"
 org = "monitoring_system"
-url = "http://127.0.0.1:8086"
+url = "http://localhost:8086"
 token="1e0f0fb3581650107a7fd380eae201d7ed681b011497a7a9328ac62afa6e61f5"
 
 # Create a client for InfluxDB 2

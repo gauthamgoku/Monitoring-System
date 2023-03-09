@@ -8,7 +8,6 @@ services:
       - .env
     environment:
       - DOCKER_INFLUXDB_INIT_MODE=setup
-      #- DOCKER_INFLUXDB_INIT_HOST='187.32.32.1'
       - DOCKER_INFLUXDB_INIT_USERNAME=${DOCKER_INFLUXDB_INIT_USERNAME}
       - DOCKER_INFLUXDB_INIT_PASSWORD=${DOCKER_INFLUXDB_INIT_PASSWORD}
       - DOCKER_INFLUXDB_INIT_ORG=${DOCKER_INFLUXDB_INIT_ORG}
@@ -20,18 +19,6 @@ services:
       - ${DOCKER_INFLUXDB_INIT_PORT}:8086
     volumes:
       - influxdb-data:/var/lib/influxdb2:rw
-      #- influxdb-config:/etc/influxdb2
-  
-  #pythoncode:
-   # build: .
-   # image: runningprocess
-    #container_name: pythoncode
-    #depends_on:
-   #   - influxdb
-   # restart: always
-   # volumes:
-   #   - /proc:/host/proc
-   # privileged: true
 
   telegraf:
     image: telegraf:1.25-alpine

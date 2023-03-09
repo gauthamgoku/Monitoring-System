@@ -4,7 +4,7 @@ from influxdb_client import InfluxDBClient, Point
 from influxdb_client.client.write_api import SYNCHRONOUS
 
 # set up the InfluxDB 2 client and write API
-url = "http://127.0.0.1:8086"
+url = "http://localhost:8086"
 token = "1e0f0fb3581650107a7fd380eae201d7ed681b011497a7a9328ac62afa6e61f5"
 org = "monitoring_system"
 bucket = "monitoring_database"
