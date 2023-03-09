@@ -1,0 +1,68 @@
+version: '3'
+
+services:
+  influxdb:
+    image: influxdb:2.6.1-alpine
+    container_name: influxdb2
+    env_file:
+      - .env
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      #- DOCKER_INFLUXDB_INIT_HOST='187.32.32.1'
+      - DOCKER_INFLUXDB_INIT_USERNAME=${DOCKER_INFLUXDB_INIT_USERNAME}
+      - DOCKER_INFLUXDB_INIT_PASSWORD=${DOCKER_INFLUXDB_INIT_PASSWORD}
+      - DOCKER_INFLUXDB_INIT_ORG=${DOCKER_INFLUXDB_INIT_ORG}
+      - DOCKER_INFLUXDB_INIT_BUCKET=${DOCKER_INFLUXDB_INIT_BUCKET}
+      - DOCKER_INFLUXDB_INIT_RETENTION=${DOCKER_INFLUXDB_INIT_RETENTION}
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=${DOCKER_INFLUXDB_INIT_ADMIN_TOKEN}
+    restart: on-failure:10
+    ports:
+      - ${DOCKER_INFLUXDB_INIT_PORT}:8086
+    volumes:
+      - influxdb-data:/var/lib/influxdb2:rw
+      #- influxdb-config:/etc/influxdb2
+  
+  #pythoncode:
+   # build: .
+   # image: runningprocess
+    #container_name: pythoncode
+    #depends_on:
+   #   - influxdb
+   # restart: always
+   # volumes:
+   #   - /proc:/host/proc
+   # privileged: true
+
+  telegraf:
+    image: telegraf:1.25-alpine
+    container_name: telegraf
+    volumes:
+      - ${TELEGRAF_CFG_PATH}:/etc/telegraf/telegraf.conf:ro
+      - /:/hostfs:ro
+    env_file:
+      - .env
+    environment:
+      - HOST_ETC=/hostfs/etc
+      - HOST_PROC=/hostfs/proc 
+      - HOST_SYS=/hostfs/sys 
+      - HOST_MOUNT_PREFIX=/hostfs
+    depends_on:
+      - influxdb
+    restart: always
+    privileged: true 
+    
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    volumes:
+      - grafana-data:/var/lib/grafana:rw
+    env_file:
+      - .env
+    depends_on:
+      - influxdb
+    ports:
+      - ${GRAFANA_PORT}:3000
+volumes:
+  grafana-data:
+  influxdb-data:
+  #influxdb-config:
