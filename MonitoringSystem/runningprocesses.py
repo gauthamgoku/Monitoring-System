@@ -41,4 +41,4 @@ while True:
             pass
     # Write the points to InfluxDB
     write_api.write(bucket=bucket, org= org, record=points)
-    time.sleep(10)
+    time.sleep(60)
