@@ -39,7 +39,7 @@ services:
     privileged: true 
     
   grafana:
-    image: grafana/grafana:latest
+    image: grafana/grafana:9.4.3
     container_name: grafana
     volumes:
       - grafana-data:/var/lib/grafana:rw
